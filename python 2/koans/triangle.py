@@ -18,6 +18,22 @@
 #   about_triangle_project_2.py
 #
 def triangle(a, b, c):
+    if a == 0 or b == 0 or c == 0:
+        raise TriangleError("Sides can not be 0")
+    if a < 0 or b < 0 or c < 0:
+        raise TriangleError("Sides can not be negative")
+    # check that the two smallest side (a and b) are less that longer side (c)
+    # That is, a + b > 0    (this is a valid triangle)
+    sides = [a, b, c]
+    max_side = max(a, b, c)
+    min_side = min(a, b, c)
+    sides.remove(max_side)
+    sides.remove(min_side)
+    # The only one left is the mid value
+    mid_side = sides[0]
+    if not (min_side + mid_side) > max_side:
+        raise TriangleError("Sides cannot form a valid triangle.")
+
     if a == b == c:
         return 'equilateral'
     elif a == b or b == c or c == a:
