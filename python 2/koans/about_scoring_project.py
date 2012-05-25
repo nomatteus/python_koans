@@ -34,9 +34,37 @@ from runner.koan import *
 # Your goal is to write the score method.
 
 def score(dice):
+    # If there are no dice, score is 0, so fast exit
     if len(dice) == 0:
         return 0
-    
+    score = 0  # Init
+    # Check for a set of 3
+    set_of_three = has_set_of_three_elements(dice)
+    if set_of_three != False:
+        if set_of_three == 1:
+            score += 1000
+        else:
+            score += set_of_three * 100
+        for i in xrange(3):  # Remove the set of 3 sides from dice
+            dice.remove(set_of_three)
+    # Check for 1s and 5s
+    for side in dice:
+        if side == 1:
+            score += 100
+        elif side == 5:
+            score += 50
+    return score
+
+
+def has_set_of_three_elements(dice):
+    """ Returns the number that has 3 elements, or False if none """
+    side_counts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+    for side in dice:
+        side_counts[side] += 1
+    for side, count in side_counts.iteritems():
+        if count >= 3:
+            return side
+    return False
 
 
 class AboutScoringProject(Koan):
