@@ -28,7 +28,8 @@ class AboutGenerators(Koan):
         self.assertEqual(2, num_list[0])
         
         # A generator has to be iterated through.
-        with self.assertRaises(TypeError): num = num_generator[0]
+        # BAD WAY TO MAKE IT WORK: with self.assertRaises(TypeError): num = num_generator[0]
+        self.assertRaises(TypeError, num_generator, [0])
         # self.assertRaises(TypeError, num_generator[0]) # Evaluates num_generator[0]
         self.assertEqual(2, list(num_generator)[0]) # This works though
         

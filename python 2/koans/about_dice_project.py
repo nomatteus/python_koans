@@ -15,9 +15,11 @@ class DiceSet(object):
         return self._values
               
     def roll(self, n):
-        # Needs implementing!
         # Tip: random.randint(min, max) can be used to generate random numbers
-        pass
+        self._values = []
+        for i in range(0, n):
+            roll = random.randint(1, 6)
+            self._values.append(roll);
 
 
 class AboutDiceProject(Koan):
@@ -60,6 +62,10 @@ class AboutDiceProject(Koan):
         # If the rolls are random, then it is possible (although not
         # likely) that two consecutive rolls are equal.  What would be a
         # better way to test this?
+        #
+        # Test more than 2 rolls to reduce the chance of getting all rolls
+        #   being the same value to close to 0. i.e. roll 10 times and make sure
+        #   they are not all equal rolls.
         
     def test_you_can_roll_different_numbers_of_dice(self):
         dice = DiceSet()
