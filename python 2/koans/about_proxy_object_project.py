@@ -22,11 +22,46 @@ from runner.koan import *
 class Proxy(object):
     def __init__(self, target_object):
         # WRITE CODE HERE
+        self._messages = []
 
-        #initialize '_obj' attribute last. Trust me on this!
+        # initialize '_obj' attribute last. Trust me on this!
+        # Matt notes: I think I found the reason why this needs to be last. It is
+        #   to allow attributes to be set in the __init__ method
+        #   (see __setattr__ method below). Anything before the _obj property is
+        #   set will be set on the proxy class, but anything after will be
+        #   proxied to the _obj class
         self._obj = target_object
 
     # WRITE CODE HERE
+    def __getattr__(self, attr_name):
+        """
+        Note: __getattr__ is only called if there isn't an attribute with
+              this name. (Unlike __getattribute__ which is called unconditionally)
+        See these links for more info:
+            http://docs.python.org/reference/datamodel.html#object.__getattr__
+            http://docs.python.org/reference/datamodel.html#object.__getattribute__
+        """
+        if hasattr(self._obj, attr_name):
+            self._messages.append(attr_name)
+            return self._obj.__getattribute__(attr_name)
+        else:
+            raise AttributeError(attr_name)
+
+    def __setattr__(self, name, value):
+        if not '_obj' in self.__dict__.keys():  # Allow attributes to be set in __init__
+            self.__dict__[name] = value
+        else:
+            self._messages.append(name + "=")
+            self._obj.__setattr__(name, value)
+
+    def messages(self):
+        return self._messages
+
+    def was_called(self, attr_name):
+        return attr_name in self._messages
+
+    def number_of_times_called(self, attr_name):
+        return self._messages.count(attr_name)
 
 
 # The proxy object should pass the following Koan:
