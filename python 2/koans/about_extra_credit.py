@@ -13,8 +13,33 @@
 from runner.koan import *
 
 
+class Player(object):
+    def __init__(self):
+        pass
+
+
+class Game(object):
+    def __init__(self, num_players):
+        self._players = []
+        for i in range(1, num_players + 1):
+            self._players.append(Player())
+
+    @property
+    def players(self):
+        return self._players
+
+    def play(self):
+        pass
+
+
 class AboutExtraCredit(Koan):
     # Write tests here. If you need extra test classes add them to the
     # test suite in runner/path_to_enlightenment.py
-    def test_extra_credit_task(self):
-        pass
+    def test_can_create_game_with_players(self):
+        game = Game(3)
+        self.assertTrue(isinstance(game, Game), "Should be a Game")
+        self.assertEqual(3, len(game.players))
+
+    def test_(self):
+        game = Game(3)
+        game.play()
